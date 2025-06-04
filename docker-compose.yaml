@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./flask
+    container_name: flask-backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./flask:/app                
+    command: python app.py
+    environment:
+      - FLASK_ENV=development
+
+
+
+  frontend:
+    build:
+      context: ./app
+    container_name: react-frontend
+    command: npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
