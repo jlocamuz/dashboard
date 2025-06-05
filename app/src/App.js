@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './components/Login';
-import DashboardVen from './components/DashboardVen';
-import DashboardAdmin from './components/DashboardAdmin';
+import Dashboard from './components/Dashboard'; 
 
-function App() {
+export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -37,19 +36,11 @@ function App() {
 
   return (
     <div className="App">
-      
       {user ? (
-        user.is_admin ? (
-          <DashboardAdmin user={user} onLogout={handleLogout} />
-        ) : (
-          <DashboardVen user={user} onLogout={handleLogout} />
-        )
+        <Dashboard user={user} onLogout={handleLogout} />
       ) : (
         <Login onLogin={handleLogin} />
       )}
-
     </div>
   );
 }
-
-export default App;

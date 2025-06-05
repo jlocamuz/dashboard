@@ -16,8 +16,11 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
 
+    # Lista de leads que tiene asignado el usuario
     leads = db.relationship('Lead', backref='user', lazy=True, 
                             primaryjoin="User.username == Lead.user_id")
+    
+    # Lista de ventas que hizo el usuario
     ventas = db.relationship('Venta', backref='user', lazy=True, 
                              primaryjoin="User.username == Venta.user_id")
 
@@ -33,6 +36,7 @@ class Lead(db.Model):
 
     user_id = db.Column(db.String(100), db.ForeignKey('users.username'), nullable=False)  
 
+    #  Cada lead puede tener una sola venta asociada
     venta = db.relationship('Venta', backref='lead', uselist=False)
 
     def serialize(self):
@@ -51,6 +55,7 @@ class Venta(db.Model):
     fecha = db.Column(db.Date, default=date.today)
 
     user_id = db.Column(db.String(100), db.ForeignKey('users.username'), nullable=False)  
+    # A que lead corresponde esta venta (relacion uno a uno con Lead)
     lead_id = db.Column(db.Integer, db.ForeignKey('leads.id'), nullable=False, unique=True)
 
     def serialize(self):
